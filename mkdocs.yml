@@ -1,0 +1,76 @@
+site_name: RouteLit FastAPI Adapter
+repo_url: https://github.com/routelit/routelit-fastapi
+site_url: https://routelit.github.io/routelit-fastapi
+site_description: A FastAPI adapter for the RouteLit framework, enabling seamless integration of RouteLit's reactive UI components with FastAPI web applications.
+site_author: Rolando Gómez Tabar
+edit_uri: edit/main/docs/
+repo_name: routelit/routelit-fastapi
+copyright: Maintained by <a href="https://rolangom.com">Rolando Gómez Tabar</a>.
+
+nav:
+  - Home: index.md
+  - API Reference: modules.md
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["src/routelit_fastapi"]
+          options:
+            docstring_style: google
+            show_root_heading: true
+            show_source: true
+            merge_init_into_class: true
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/book-open-variant
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/routelit/routelit-fastapi
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/routelit-fastapi
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.arithmatex:
+      generic: true
+  - toc:
+      permalink: true
+      permalink_title: Permanent link
+      toc_depth: 3
