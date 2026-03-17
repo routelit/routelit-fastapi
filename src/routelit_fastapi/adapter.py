@@ -107,7 +107,7 @@ class RouteLitFastAPIAdapter:
         assets_path = resources.files(package_name).joinpath(path)
         app.mount(
             f"/routelit/{package_name}",
-            Mount(f"/routelit/{package_name}", app=StaticFiles(directory=str(assets_path), check_dir=False)),
+            StaticFiles(directory=str(assets_path), check_dir=False),
         )
 
     def configure(self, app: FastAPI) -> "RouteLitFastAPIAdapter":
@@ -123,14 +123,14 @@ class RouteLitFastAPIAdapter:
         # Store the FastAPI app for later use in route decorators
         self.app = app
 
-        # Configure static files
+        # Configure static files FIRST (specific routes)
         for static_path in self.routelit.get_builder_class().get_client_resource_paths():
             self.configure_static_assets(app, static_path)
 
-        # Mount routelit static files
+        # Mount routelit static files SECOND (general route)
         app.mount(
             "/routelit",
-            Mount("/routelit", app=StaticFiles(directory=self.static_path, check_dir=False)),
+            StaticFiles(directory=self.static_path, check_dir=False),
         )
 
         # Configure Jinja2 templates
