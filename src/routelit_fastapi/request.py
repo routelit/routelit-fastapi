@@ -66,8 +66,8 @@ class FastAPIRLRequest(RouteLitRequest):
             # Extract files from form data
             files: list[IOBase] = []
             for key, value in form.multi_items():
-                # Check if value is a file upload (has filename attribute)
-                if key == "files" and hasattr(value, "filename") and value.filename:
+                # Check if value is a file upload (has filename and file attributes)
+                if key == "files" and hasattr(value, "filename") and value.filename and hasattr(value, "file"):
                     # Store filename on the file object for later access
                     file_obj = cast(IOBase, value.file)
                     file_obj.filename = value.filename  # type: ignore[attr-defined]

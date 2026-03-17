@@ -1,5 +1,5 @@
 import importlib.resources as resources
-from collections.abc import Awaitable, Callable
+from collections.abc import Callable
 from datetime import datetime
 from enum import Enum
 from typing import Any, Literal, TypedDict
@@ -122,7 +122,7 @@ class RouteLitFastAPIAdapter:
         """
         # Store the FastAPI app for later use in route decorators
         self.app = app
-        
+
         # Configure static files
         for static_path in self.routelit.get_builder_class().get_client_resource_paths():
             self.configure_static_assets(app, static_path)
@@ -279,7 +279,7 @@ class RouteLitFastAPIAdapter:
         def decorator(view_fn: ViewFn) -> None:
             if self.app is None:
                 raise RuntimeError("Adapter not configured. Call configure() first.")  # noqa: TRY003
-            
+
             async def endpoint(request: Request) -> Response:
                 return await self.response(view_fn, request)
 
@@ -318,7 +318,7 @@ class RouteLitFastAPIAdapter:
         def decorator(view_fn: ViewFn) -> None:
             if self.app is None:
                 raise RuntimeError("Adapter not configured. Call configure() first.")  # noqa: TRY003
-            
+
             async def endpoint(request: Request) -> Response:
                 return await self.stream_response(view_fn, request)
 

@@ -32,9 +32,7 @@ class TestFastAPIRLRequest:
             # httpx lowercases headers, so check for lowercase version
             return {"has_custom_header": "x-custom-header" in headers}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test", headers={"X-Custom-Header": "custom-value"})
             assert response.status_code == 200
             assert response.json()["has_custom_header"]
@@ -50,9 +48,7 @@ class TestFastAPIRLRequest:
             params = rl_request.get_path_params()
             return {"item_id": params.get("item_id") if params else None}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test/123")
             assert response.status_code == 200
             assert response.json()["item_id"] == "123"
@@ -67,9 +63,7 @@ class TestFastAPIRLRequest:
             await rl_request.build()
             return {"referrer": rl_request.get_referrer()}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test", headers={"referer": "http://example.com/page"})
             assert response.status_code == 200
             assert response.json()["referrer"] == "http://example.com/page"
@@ -84,9 +78,7 @@ class TestFastAPIRLRequest:
             await rl_request.build()
             return {"method": rl_request.method}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test")
             assert response.status_code == 200
             assert response.json()["method"] == "GET"
@@ -101,9 +93,7 @@ class TestFastAPIRLRequest:
             await rl_request.build()
             return {"method": rl_request.method}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.post("/test")
             assert response.status_code == 200
             assert response.json()["method"] == "POST"
@@ -119,9 +109,7 @@ class TestFastAPIRLRequest:
             json_data = rl_request.get_json()
             return {"key": json_data.get("key") if json_data else None}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.post("/test", json={"key": "value"})
             assert response.status_code == 200
             assert response.json()["key"] == "value"
@@ -137,9 +125,7 @@ class TestFastAPIRLRequest:
             json_data = rl_request.get_json()
             return {"json_data": json_data}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test")
             assert response.status_code == 200
             assert response.json()["json_data"] is None
@@ -156,9 +142,7 @@ class TestFastAPIRLRequest:
             # Return count of files
             return {"file_count": len(files) if files else 0}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             files = {
                 "files": ("file1.txt", BytesIO(b"file1 content"), "text/plain"),
             }
@@ -178,9 +162,7 @@ class TestFastAPIRLRequest:
             files = rl_request.get_files()
             return {"files": files}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.post("/test", json={"key": "value"})
             assert response.status_code == 200
             assert response.json()["files"] is None
@@ -195,9 +177,7 @@ class TestFastAPIRLRequest:
             await rl_request.build()
             return {"is_json": rl_request.is_json()}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.post("/test", json={})
             assert response.status_code == 200
             assert response.json()["is_json"]
@@ -212,9 +192,7 @@ class TestFastAPIRLRequest:
             await rl_request.build()
             return {"is_json": rl_request.is_json()}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             files = {"file": ("test.txt", BytesIO(b"content"), "text/plain")}
             response = await ac.post("/test", files=files)
             assert response.status_code == 200
@@ -230,9 +208,7 @@ class TestFastAPIRLRequest:
             await rl_request.build()
             return {"is_multipart": rl_request.is_multipart()}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             files = {"file": ("test.txt", BytesIO(b"content"), "text/plain")}
             response = await ac.post("/test", files=files)
             assert response.status_code == 200
@@ -248,9 +224,7 @@ class TestFastAPIRLRequest:
             await rl_request.build()
             return {"is_multipart": rl_request.is_multipart()}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.post("/test", json={})
             assert response.status_code == 200
             assert not response.json()["is_multipart"]
@@ -266,9 +240,7 @@ class TestFastAPIRLRequest:
             value = rl_request.get_query_param("key")
             return {"value": value}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test?key=value")
             assert response.status_code == 200
             assert response.json()["value"] == "value"
@@ -284,9 +256,7 @@ class TestFastAPIRLRequest:
             value = rl_request.get_query_param("nonexistent")
             return {"value": value}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test")
             assert response.status_code == 200
             assert response.json()["value"] is None
@@ -302,9 +272,7 @@ class TestFastAPIRLRequest:
             values = rl_request.get_query_param_list("foo")
             return {"values": values}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test?foo=bar&foo=baz")
             assert response.status_code == 200
             assert response.json()["values"] == ["bar", "baz"]
@@ -320,9 +288,7 @@ class TestFastAPIRLRequest:
             values = rl_request.get_query_param_list("nonexistent")
             return {"values": values}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test")
             assert response.status_code == 200
             assert response.json()["values"] == []
@@ -345,9 +311,7 @@ class TestFastAPIRLRequest:
                 pass
             return {"valid": is_valid}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test")
             assert response.status_code == 200
             assert response.json()["valid"]
@@ -363,9 +327,7 @@ class TestFastAPIRLRequest:
             session_id = rl_request.get_session_id()
             return {"session_id": session_id}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test", cookies={"ROUTELIT_SESSION_ID": "test-session-123"})
             assert response.status_code == 200
             assert response.json()["session_id"] == "test-session-123"
@@ -380,9 +342,7 @@ class TestFastAPIRLRequest:
             await rl_request.build()
             return {"pathname": rl_request.get_pathname()}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test/path")
             assert response.status_code == 200
             assert response.json()["pathname"] == "/test/path"
@@ -397,9 +357,7 @@ class TestFastAPIRLRequest:
             await rl_request.build()
             return {"host": rl_request.get_host()}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.get("/test")
             assert response.status_code == 200
             assert "test" in response.json()["host"]
@@ -415,9 +373,7 @@ class TestFastAPIRLRequest:
             json_data = rl_request.get_json()
             return {"json_data": json_data}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             files = {"json": (None, json.dumps({"key": "value"}), "application/json")}
             response = await ac.post("/test", files=files)
             assert response.status_code == 200
@@ -437,9 +393,7 @@ class TestFastAPIRLRequest:
             json_data = rl_request.get_json()
             return {"key": json_data.get("key") if json_data else None}
 
-        async with AsyncClient(
-            transport=ASGITransport(app=fastapi_app), base_url="http://test"
-        ) as ac:
+        async with AsyncClient(transport=ASGITransport(app=fastapi_app), base_url="http://test") as ac:
             response = await ac.post("/test", json={"key": "value"})
             assert response.status_code == 200
             assert response.json()["key"] == "value"
