@@ -1295,7 +1295,7 @@ wheels = [
 
 [[package]]
 name = "routelit-fastapi"
-version = "0.0.1"
+version = "0.0.2"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
@@ -1316,6 +1316,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
+    { name = "routelit-mantine" },
     { name = "ruff" },
     { name = "tox-uv" },
     { name = "ty" },
@@ -1342,10 +1343,23 @@ dev = [
     { name = "pytest", specifier = ">=9.0.2" },
     { name = "pytest-asyncio", specifier = ">=0.21.0" },
     { name = "pytest-cov", specifier = ">=4.0.0" },
+    { name = "routelit-mantine", specifier = ">=0.1.5" },
     { name = "ruff", specifier = ">=0.14.14" },
     { name = "tox-uv", specifier = ">=1.29.0" },
     { name = "ty", specifier = ">=0.0.23" },
     { name = "uvicorn", specifier = ">=0.31.0" },
+]
+
+[[package]]
+name = "routelit-mantine"
+version = "0.1.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "routelit" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f1/8c/083efa87d0e5567d69f145a51d9f9d7d6d6d69ebb8c1705a945aaf31c9a2/routelit_mantine-0.1.5.tar.gz", hash = "sha256:7576363e5c59aa0d549696cae7b6076877dafc533636ce5c7a51ee9bbeed6cae", size = 2699829 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/83/e5/37d7b2525646105aeb04e12ce641f38e333a28c3d08f3323a182e59ba676/routelit_mantine-0.1.5-py3-none-any.whl", hash = "sha256:ccd4290023d2a99a5a236a4f8e694f8fc72fdceafb1e549a88d2ebb4726b2fbd", size = 2633643 },
 ]
 
 [[package]]

@@ -1,6 +1,6 @@
 [project]
 name = "routelit-fastapi"
-version = "0.0.1"
+version = "0.0.2"
 description = "A FastAPI adapter for the RouteLit framework, enabling seamless integration of RouteLit's reactive UI components with FastAPI web applications"
 authors = [{ name = "Rolando Gómez Tabar", email = "rolangom@gmail.com" }]
 license = { text = "Apache-2.0" }
@@ -45,6 +45,7 @@ dev = [
     "pytest-asyncio>=0.21.0",
     "uvicorn>=0.31.0",
     "ty>=0.0.23",
+    "routelit-mantine>=0.1.5",
 ]
 
 [build-system]
@@ -128,4 +129,11 @@ branch = true
 source = ["src"]
 
 [tool.ty.analysis]
-allowed-unresolved-imports = ["fastapi", "fastapi.responses", "fastapi.templating", "routelit", "starlette.routing", "starlette.staticfiles"]
+allowed-unresolved-imports = [
+    "fastapi",
+    "fastapi.responses",
+    "fastapi.templating",
+    "routelit",
+    "starlette.routing",
+    "starlette.staticfiles",
+]
