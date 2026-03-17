@@ -8,7 +8,6 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, JSONResponse, Response, StreamingResponse
 from fastapi.templating import Jinja2Templates
 from routelit import COOKIE_SESSION_KEY, AssetTarget, RouteLit, ViewFn
-from starlette.routing import Mount
 from starlette.staticfiles import StaticFiles
 
 from .request import FastAPIRLRequest

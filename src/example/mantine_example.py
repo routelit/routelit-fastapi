@@ -10,12 +10,16 @@ Run with:
 Open http://localhost:8000 in your browser.
 """
 
+# mypy: disable-error-code="import-untyped,attr-defined,no-any-return,unused-ignore,import-not-found"
+
 import time
-from fastapi import FastAPI
+
 import uvicorn
-from routelit import RouteLit
-from routelit_fastapi import RouteLitFastAPIAdapter
+from fastapi import FastAPI
+from routelit import RouteLit, RouteLitBuilder
 from routelit_mantine import RLBuilder
+
+from routelit_fastapi import RouteLitFastAPIAdapter
 
 # Create FastAPI app
 app = FastAPI()
@@ -28,14 +32,14 @@ adapter = RouteLitFastAPIAdapter(rl).configure(app)
 
 
 @rl.cache_data
-def get_expensive_data():
+def get_expensive_data() -> str:
     """Simulate expensive data fetch."""
     time.sleep(1)
     return "This data was cached after 1 second delay!"
 
 
 @adapter.route("/")
-def index_view(rl: RLBuilder):
+def index_view(rl: RouteLitBuilder) -> None:
     """Home page demonstrating Mantine components."""
     rl.title("RouteLit FastAPI + Mantine")
 
@@ -76,7 +80,8 @@ This example demonstrates the **routelit-fastapi** adapter with **routelit-manti
         rl.session_state["show_data"] = True
         rl.rerun()
     if rl.session_state.get("show_data"):
-        rl.text(get_expensive_data())
+        cached_data = get_expensive_data()  # type: ignore[call-arg]
+        rl.text(str(cached_data) if cached_data else "Loading...")
 
     # Select
     color = rl.select(
@@ -108,7 +113,7 @@ This example demonstrates the **routelit-fastapi** adapter with **routelit-manti
 
 
 @rl.fragment("counter_fragment")
-def counter_fragment(rl: RLBuilder):
+def counter_fragment(rl: RouteLitBuilder) -> None:
     """Fragment demonstrating partial updates."""
     rl.subheader("Fragment Counter")
 
@@ -125,7 +130,7 @@ def counter_fragment(rl: RLBuilder):
 
 
 @adapter.route("/fragment-demo")
-def fragment_demo_view(rl: RLBuilder):
+def fragment_demo_view(rl: RouteLitBuilder) -> None:
     """Page demonstrating fragment updates."""
     rl.title("Fragment Demo")
 
@@ -150,8 +155,9 @@ This is useful for performance optimization.
 
 
 @rl.dialog("confirm_dialog")
-def confirm_dialog(rl: RLBuilder, *, action: str):
+def confirm_dialog(rl: RouteLitBuilder) -> None:
     """Confirmation dialog."""
+    action = rl.session_state.get("dialog_action", "confirm")
     rl.header(f"Confirm {action}")
     rl.text(f"Are you sure you want to {action}?")
 
@@ -164,7 +170,7 @@ def confirm_dialog(rl: RLBuilder, *, action: str):
 
 
 @adapter.route("/dialog-demo")
-def dialog_demo_view(rl: RLBuilder):
+def dialog_demo_view(rl: RouteLitBuilder) -> None:
     """Page demonstrating dialog usage."""
     rl.title("Dialog Demo")
 
@@ -174,10 +180,12 @@ Dialogs are modal overlays that require user interaction before returning to the
 """)
 
     if rl.button("Delete item"):
-        confirm_dialog(rl, action="delete")
+        rl.session_state["dialog_action"] = "delete"
+        confirm_dialog(rl)
 
     if rl.button("Archive item"):
-        confirm_dialog(rl, action="archive")
+        rl.session_state["dialog_action"] = "archive"
+        confirm_dialog(rl)
 
     if rl.session_state.get("confirmed_action"):
         rl.text(f"Confirmed action: {rl.session_state['confirmed_action']}", color="green")
@@ -186,7 +194,7 @@ Dialogs are modal overlays that require user interaction before returning to the
 
 
 @adapter.route("/form-demo")
-def form_demo_view(rl: RLBuilder):
+def form_demo_view(rl: RouteLitBuilder) -> None:
     """Page demonstrating form handling."""
     rl.title("Form Demo")
 
@@ -204,7 +212,7 @@ def form_demo_view(rl: RLBuilder):
 
     if rl.session_state.get("form_submitted"):
         data = rl.session_state.get("form_data", {})
-        rl.text(f"Form submitted successfully!", color="green")
+        rl.text("Form submitted successfully!", color="green")
         rl.markdown(f"""
 **Submitted Data:**
 - Name: {data.get("name", "N/A")}
@@ -216,7 +224,7 @@ def form_demo_view(rl: RLBuilder):
 
 
 @adapter.stream_route("/stream-demo")
-async def stream_demo_view(rl: RLBuilder):
+async def stream_demo_view(rl: RouteLitBuilder) -> None:
     """Streaming demo with async updates."""
     import asyncio
 
@@ -240,4 +248,4 @@ if __name__ == "__main__":
     print("  - /dialog-demo (Dialog Demo)")
     print("  - /form-demo (Form Demo)")
     print("  - /stream-demo (Stream Demo)")
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000)
