@@ -1,6 +1,6 @@
 [project]
 name = "routelit-fastapi"
-version = "0.0.3"
+version = "0.1.0"
 description = "A FastAPI adapter for the RouteLit framework, enabling seamless integration of RouteLit's reactive UI components with FastAPI web applications"
 authors = [{ name = "Rolando Gómez Tabar", email = "rolangom@gmail.com" }]
 license = { text = "Apache-2.0" }
