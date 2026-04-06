@@ -1,6 +1,6 @@
 [project]
 name = "routelit-fastapi"
-version = "0.0.2"
+version = "0.0.3"
 description = "A FastAPI adapter for the RouteLit framework, enabling seamless integration of RouteLit's reactive UI components with FastAPI web applications"
 authors = [{ name = "Rolando Gómez Tabar", email = "rolangom@gmail.com" }]
 license = { text = "Apache-2.0" }
@@ -19,7 +19,7 @@ classifiers = [
 ]
 dependencies = [
     "fastapi>=0.100.0",
-    "routelit>=0.6.1",
+    "routelit>=0.6.2",
     "jinja2>=3.0.0",
     "python-multipart>=0.0.6",
 ]

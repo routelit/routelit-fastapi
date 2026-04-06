@@ -64,7 +64,7 @@ class RouteLitFastAPIAdapter:
         run_mode: RunMode = "prod",
         local_frontend_server: str | None = None,
         local_components_server: str | None = None,
-        cookie_config: CookieConfig | None = None,
+        cookie_config: CookieConfig | bool | None = None,
     ):
         """
         Initialize the RouteLitFastAPIAdapter.
@@ -79,7 +79,7 @@ class RouteLitFastAPIAdapter:
             run_mode (RunMode): The run mode. Example: "prod", "dev_client", "dev_components".
             local_frontend_server (Optional[str]): The local vite frontend server. Example: "http://localhost:5173".
             local_components_server (Optional[str]): The local vite components server. Example: "http://localhost:5174".
-            cookie_config (Optional[dict[str, Any]]): The cookie configuration. Default is production cookie config.
+            cookie_config (Optional[dict[str, Any] | bool]): The cookie configuration. Default is production cookie config. Set to `False` to skip cookies config (e.g. for dev or testing).
         """
         self.routelit = routelit
         self.static_path = static_path or get_default_static_path()
@@ -88,7 +88,9 @@ class RouteLitFastAPIAdapter:
         self.local_frontend_server = local_frontend_server
         self.local_components_server = local_components_server
         self.cookie_config: CookieConfig = (
-            {**production_cookie_config, **(cookie_config or {})} if run_mode == "prod" else {}
+            {**production_cookie_config, **(cookie_config or {})}
+            if run_mode == "prod" and cookie_config is not False
+            else {}
         )
         self.templates: Jinja2Templates | None = None
         self.app: FastAPI | None = None
@@ -155,9 +157,13 @@ class RouteLitFastAPIAdapter:
         rl_request = FastAPIRLRequest(request)
         await rl_request.build()
 
+        # Note: handle_get_request returns an empty RouteLitResponse with just the head metadata.
+        # The actual view function is called on POST requests.
+        # This works the same for both async and sync view functions.
         rl_response = self.routelit.handle_get_request(view_fn, rl_request, **kwargs)
 
         response = self.templates.TemplateResponse(
+            request,
             "index.html",
             {
                 "request": request,
